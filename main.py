@@ -1,6 +1,8 @@
 from nicegui import ui
 from pathlib import Path
 import base64
+from PIL import Image
+import io
 
 
 
@@ -28,11 +30,15 @@ class ImageUploader:
                 ui.button('Clear', on_click=self.clear_image).classes('mt-2')
 
     def handle_upload(self, e):
-        self.uploaded_image = e.content
-        self.uploaded_image.seek(0)
-        image_bytes = self.uploaded_image.read()
+
+        uploaded_image = e.content
+        uploaded_image.seek(0)
+        self.image_bytes = uploaded_image.read()
         image_base64 = base64.b64encode(image_bytes).decode('utf-8')
         self.image_container.set_source(f'data:image/png;base64,{image_base64}')
+
+        image = Image.open(io.BytesIO(image_bytes))
+        image.save("image.png")
         ui.notify('Image uploaded successfully!', type='positive')
 
     def clear_image(self):
