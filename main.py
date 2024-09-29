@@ -124,9 +124,9 @@ class HomePage:
         with ui.column().classes('w-full h-screen pb-8'):
             ui.label('').classes('flex-grow')
             with ui.row().classes('w-full justify-center items-center'):
-                ui.button('Button 1', on_click=lambda: ui.open('/home')).classes('mx-2')
-                ui.button('+', on_click=lambda: ui.open('/upload')).classes('mx-2 rounded-full w-12 h-12')
-                ui.button('Button 2', on_click=lambda: ui.open('/home')).classes('mx-2')
+                ui.button('Button 1', on_click=lambda: ui.navigate.to('/home')).classes('mx-2')
+                ui.button('+', on_click=lambda: ui.navigate.to('/upload')).classes('mx-2 rounded-full w-12 h-12')
+                ui.button('Button 2', on_click=lambda: ui.navigate.to('/home')).classes('mx-2')
 
 class UploadPage:
     def __init__(self):
@@ -134,12 +134,12 @@ class UploadPage:
         self.uploader = ImageUploader()
         self.uploader.create()
         ui.button('Submit', on_click=self.handle_submit).classes('mt-4 w-full')
-        ui.button('Back to Home', on_click=lambda: ui.open('/home')).classes('mt-4 w-full')
+        ui.button('Back to Home', on_click=lambda: ui.navigate.to('/home')).classes('mt-4 w-full')
 
     def handle_submit(self):
         image = self.uploader.get_image()
         if image:
-            ui.open('/submit')
+            ui.navigate.to('/submit')
         else:
             ui.notify('Please upload an image first', type='warning')
 
@@ -148,7 +148,7 @@ class SubmitPage:
         self.page = ui.page('/submit')
         
         ui.label('Image Submission').classes('text-xl font-bold mb-2')
-        ui.button('Back to Home', on_click=lambda: ui.open('/home')).classes('mt-4 w-full')
+        ui.button('Back to Home', on_click=lambda: ui.navigate.to('/home')).classes('mt-4 w-full')
 
 def main():
     ui.query('body').classes('bg-gray-100')
@@ -169,7 +169,7 @@ def main():
     ui.page('/upload')(UploadPage)
     ui.page('/submit')(SubmitPage)
 
-    ui.open('/home')
+    ui.navigate.to('/home')
 
     ui.run(title="Image Uploader", favicon="📷")
 
